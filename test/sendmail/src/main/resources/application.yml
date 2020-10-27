@@ -1,0 +1,6 @@
+spring:
+  mail:
+    host: smtp.163.com #协议
+    username: hang_15236270334@163.com #邮箱用户名
+    password: SGJHQBAAKECZAZGJ #授权码 不是客户端登录密码
+    default-encoding: utf-8
