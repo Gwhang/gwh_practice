@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--shiro+spring整合的核心配置-->
+    <!--1.SecurityManager-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--配置realm-->
+        <property name="realms" ref="myUerRealm"></property>
+    </bean>
+    <!--2.配置自定义realm，走数据库  不用默认的iniRealm shiro.ini,不利于后期维护-->
+    <bean id="myUerRealm" class="org.example.conf.MyRealm"></bean>
+
+    <!--3.shiroFilter,shiro拦截后会把请求，交给该过滤器处理,id需要和web.xml中配置的名字一致-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--        登录界面-->
+        <property name="loginUrl" value="/login.jsp"></property>
+        <!--        没有权限的跳转-->
+        <property name="unauthorizedUrl" value="/unauthorized.jsp"></property>
+
+        <property name="securityManager" ref="securityManager"></property>
+        <property name="filterChainDefinitions">
+            <!--
+                        1.顺序问题：  严格的（/** = authc）过滤器往后配置
+                        2.anon：     匿名访问，不登录就可以访问
+                        3.authc ：   认证后访问
+            -->
+            <value>
+                /doLogin = anon
+                /js/** = anon
+                /** = authc
+            </value>
+        </property>
+    </bean>
+
+
+</beans>
