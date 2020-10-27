@@ -1,0 +1,31 @@
+#微信支付配置 微信开发文档：https://pay.weixin.qq.com/wiki/doc/api/index.html
+wechat:
+  #商户账号id
+  appId: xxxxxxxxxx
+  #微信支付商户号
+  mcHid: xxxxxxxx
+  #微信支付异步回调地址
+  notifyUrl: xxxxxxxxxxxxxxxxxxxxxxx
+  #微信退款结果通知地址
+  notifyRefundUrl: xxxxxxxxxxxxxxxxx
+  #密钥
+  wechatPrivateKey: xxxxxxx
+  #商品描述
+  body: xxxxxxxxx
+  #交易类型
+  tradeType: MWEB
+  openId:
+  #微信支付网关
+  weChatPrepayUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+  #微信退款网关
+  weChatRefundPrepayUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
+  #微信付款查询订单网关
+  weChatQueryPrepayUrl: https://api.mch.weixin.qq.com/pay/orderquery
+  #微信退款查询网关
+  weChatQueryRefundPrepayUrl: https://api.mch.weixin.qq.com/pay/refundquery
+  #微信浏览器内调起获取openid时的appid
+  jsapiAppId: xxxxxxxxxxxx
+  #JSAPI交易类型
+  jsapiTradeType: JSAPI
+  #appSecret
+  appSecret: xxxxxxxxxxxxxxx
