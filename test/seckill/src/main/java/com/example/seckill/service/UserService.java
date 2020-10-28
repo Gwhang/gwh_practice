@@ -7,7 +7,9 @@ import com.example.seckill.service.model.UserModel;
  */
 public interface UserService {
 
-    //获取用户信息
-    public UserModel getUser(Integer id);
+    // 获取用户信息
+    UserModel getUser(Integer id);
+    // 创建用户
+    void register(UserModel userModel) throws Exception;
 
 }

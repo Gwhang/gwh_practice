@@ -26,7 +26,7 @@ public class UserDao {
      *
      * @mbg.generated Thu Oct 15 23:37:50 CST 2020
      */
-    private Byte gender;
+    private Integer gender;
 
     /**
      *
@@ -120,7 +120,7 @@ public class UserDao {
      *
      * @mbg.generated Thu Oct 15 23:37:50 CST 2020
      */
-    public Byte getGender() {
+    public Integer getGender() {
         return gender;
     }
 
@@ -132,7 +132,7 @@ public class UserDao {
      *
      * @mbg.generated Thu Oct 15 23:37:50 CST 2020
      */
-    public void setGender(Byte gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 

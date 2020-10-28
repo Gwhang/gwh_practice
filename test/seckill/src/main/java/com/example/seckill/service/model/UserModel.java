@@ -32,7 +32,7 @@ public class UserModel implements Serializable {
      *
      * @mbg.generated Thu Oct 15 23:37:50 CST 2020
      */
-    private Byte gender;
+    private Integer gender;
 
     /**
      *
@@ -95,11 +95,11 @@ public class UserModel implements Serializable {
         this.name = name;
     }
 
-    public Byte getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(Byte gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 

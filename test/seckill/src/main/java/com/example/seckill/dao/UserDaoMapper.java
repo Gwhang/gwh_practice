@@ -50,4 +50,6 @@ public interface UserDaoMapper {
      * @mbg.generated Thu Oct 15 23:37:50 CST 2020
      */
     int updateByPrimaryKey(UserDao record);
+
+    int selectByTel(String tel);
 }

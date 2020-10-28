@@ -6,11 +6,11 @@ import com.example.seckill.error.EmBusinessError;
 import com.example.seckill.response.CommonReturnType;
 import com.example.seckill.service.UserService;
 import com.example.seckill.service.model.UserModel;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +18,22 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * 用户管理
  */
-@RequestMapping("/user")
+@RequestMapping("/api/user")
+@Controller
 public class UserController extends BaseController{
 
     Logger logger= LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public UserService userService;
+
+    @Autowired
+    public HttpServletRequest httpServletRequest;
 
     @RequestMapping("/getUser")
     @ResponseBody
@@ -60,7 +65,59 @@ public class UserController extends BaseController{
         return userVo;
     }
 
+    /**
+     * 获取用户验证码并发送
+     * @param telephone
+     * @return
+     */
+    @RequestMapping("/getotp")
+    @ResponseBody
+    public CommonReturnType getOpt(@RequestParam("telephone")String telephone){
+        //需要按照规则生成OPT验证码
+        Random random=new Random();
+        int randomInt = random.nextInt(999999);
+        randomInt += 100000;
+        String optCode=String.valueOf(randomInt);
+        //将OPT验证码同对应用户手机号关联，使用httpsession的方式绑定OPTcode和用户的手机号
+        httpServletRequest.getSession().setAttribute(telephone,optCode);
+        httpServletRequest.getSession().setMaxInactiveInterval(30*60);
+      //  String sessionOptCode=(String)this.httpServletRequest.getSession().getAttribute(telephone);
+        //将OPT验证码通过短信通道发送给用户
+        logger.info("telephone={}&optCode={}",telephone,optCode);
 
+        return CommonReturnType.create(null);
+    }
 
+    /**
+     * 用户注册
+     * @param telephone
+     * @param otpCode
+     * @param name
+     * @param gender
+     * @param age
+     * @return
+     */
+    @RequestMapping("/register")
+    @ResponseBody
+    public CommonReturnType registe(String telephone,String otpCode,String name,
+                                    Integer gender,Integer age,
+                                    String password) throws Exception{
+        //验证手机号和对应的otpcode相符合
+       // String sessionOptCode=(String)this.httpServletRequest.getSession().getAttribute(telephone);
+        //StringUtils.equals 底层有判空的操作
+//        if(!com.alibaba.druid.util.StringUtils.equals(sessionOptCode,otpCode)){
+//            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"短信验证码与手机不符合");
+//        }
+        //用户注册流程
+        UserModel userModel=new UserModel();
+        userModel.setName(name);
+        userModel.setGender(gender);
+        userModel.setAge(age);
+        userModel.setTelphone(telephone);
+        userModel.setRegisterMode("byphone");
+        userModel.setEncrptPassword(DigestUtils.md5Hex(password));
+        userService.register(userModel);
+        return CommonReturnType.create(null);
+    }
 
 }
