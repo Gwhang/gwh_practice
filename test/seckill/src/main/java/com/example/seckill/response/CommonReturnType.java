@@ -38,4 +38,5 @@ public class CommonReturnType {
     public void setData(Object data) {
         this.data = data;
     }
+
 }

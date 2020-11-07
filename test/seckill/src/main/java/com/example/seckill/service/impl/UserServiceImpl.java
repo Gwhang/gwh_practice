@@ -10,6 +10,9 @@ import com.example.seckill.error.EmBusinessError;
 import com.example.seckill.service.UserService;
 
 import com.example.seckill.service.model.UserModel;
+import com.example.seckill.validator.ValidationResult;
+import com.example.seckill.validator.ValidatorImpl;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +35,8 @@ public class UserServiceImpl implements UserService {
     public UserDaoMapper userDaoMapper;
     @Autowired
     public UserPassWordMapper userPassWordMapper;
-
+    @Autowired
+    public ValidatorImpl validator;
     /**
      * 获取用户对象信息
      * @param id
@@ -81,9 +85,14 @@ public class UserServiceImpl implements UserService {
             logger.info("用户注册 对象为空");
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
-        if(StringUtils.isEmpty(userModel.getName())||StringUtils.isEmpty(userModel.getGender())
-            ||StringUtils.isEmpty(userModel.getTelphone())){
-            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+//        if(StringUtils.isEmpty(userModel.getName())||StringUtils.isEmpty(userModel.getGender())
+//            ||StringUtils.isEmpty(userModel.getTelphone())){
+//            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+//        }
+        //校验优化
+        ValidationResult validate = validator.validate(userModel);
+        if (validate.isHasErrors()){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,validate.getErrMsg());
         }
         //校验手机号是否存在
         int count = userDaoMapper.selectByTel(userModel.getTelphone());
@@ -139,4 +148,27 @@ public class UserServiceImpl implements UserService {
         return  userModel;
     }
 
+    /**
+     * 校验用户信息
+     * @param telephone 手机号
+     * @param encPassword 加密后的密码
+     * @return
+     */
+    @Override
+    public UserModel checkLogin(String telephone, String encPassword) throws Exception{
+
+        // 获取用户信息 根据手机号
+        UserDao userDo=this.userDaoMapper.selectByTelephone(telephone);
+        if (StringUtils.isEmpty(userDo)){
+            throw new BusinessException(EmBusinessError.USER_LOGIN_EXIST);
+        }
+        //获取密码信息
+        UserPassWord userPassWord=this.userPassWordMapper.selectUserById(userDo.getId());
+        //设置用户信息
+        UserModel userModel=this.converFromDateObject(userDo,userPassWord);
+        if (com.alibaba.druid.util.StringUtils.equals(userModel.getEncrptPassword(),encPassword)){
+            throw  new BusinessException(EmBusinessError.USER_LOGIN_EXIST);
+        }
+        return userModel;
+    }
 }

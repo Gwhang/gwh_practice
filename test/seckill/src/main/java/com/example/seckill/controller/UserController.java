@@ -6,6 +6,7 @@ import com.example.seckill.error.EmBusinessError;
 import com.example.seckill.response.CommonReturnType;
 import com.example.seckill.service.UserService;
 import com.example.seckill.service.model.UserModel;
+import com.example.seckill.validator.ValidatorImpl;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import java.util.Random;
  */
 @RequestMapping("/api/user")
 @Controller
+@CrossOrigin(allowCredentials = "true",allowedHeaders = "*") // 跨域接收 解决session中验证码获取为null的问题
 public class UserController extends BaseController{
 
     Logger logger= LoggerFactory.getLogger(this.getClass());
@@ -34,6 +36,7 @@ public class UserController extends BaseController{
 
     @Autowired
     public HttpServletRequest httpServletRequest;
+
 
     @RequestMapping("/getUser")
     @ResponseBody
@@ -78,11 +81,12 @@ public class UserController extends BaseController{
         int randomInt = random.nextInt(999999);
         randomInt += 100000;
         String optCode=String.valueOf(randomInt);
-        //将OPT验证码同对应用户手机号关联，使用httpsession的方式绑定OPTcode和用户的手机号
+        // 将OPT验证码同对应用户手机号关联，使用httpsession的方式绑定OPTcode和用户的手机号
         httpServletRequest.getSession().setAttribute(telephone,optCode);
+        // 设置session有效时长
         httpServletRequest.getSession().setMaxInactiveInterval(30*60);
-      //  String sessionOptCode=(String)this.httpServletRequest.getSession().getAttribute(telephone);
-        //将OPT验证码通过短信通道发送给用户
+        //  String sessionOptCode=(String)this.httpServletRequest.getSession().getAttribute(telephone);
+        // 将OPT验证码通过短信通道发送给用户
         logger.info("telephone={}&optCode={}",telephone,optCode);
 
         return CommonReturnType.create(null);
@@ -102,12 +106,12 @@ public class UserController extends BaseController{
     public CommonReturnType registe(String telephone,String otpCode,String name,
                                     Integer gender,Integer age,
                                     String password) throws Exception{
-        //验证手机号和对应的otpcode相符合
-       // String sessionOptCode=(String)this.httpServletRequest.getSession().getAttribute(telephone);
-        //StringUtils.equals 底层有判空的操作
-//        if(!com.alibaba.druid.util.StringUtils.equals(sessionOptCode,otpCode)){
-//            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"短信验证码与手机不符合");
-//        }
+        // TODO 验证手机号和对应的otpcode相符合 遗留问题，session获取不到 后期使用redis改进
+    //    String sessionOptCode=(String)this.httpServletRequest.getSession().getAttribute(telephone);
+        // StringUtils.equals 底层有判空的操作
+  //      if(!com.alibaba.druid.util.StringUtils.equals(sessionOptCode,otpCode)){
+    //        throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"短信验证码与手机不符合");
+  //      }
         //用户注册流程
         UserModel userModel=new UserModel();
         userModel.setName(name);
@@ -117,6 +121,24 @@ public class UserController extends BaseController{
         userModel.setRegisterMode("byphone");
         userModel.setEncrptPassword(DigestUtils.md5Hex(password));
         userService.register(userModel);
+        return CommonReturnType.create(null);
+    }
+
+    @RequestMapping(value = "/login",method = {RequestMethod.POST})
+    @ResponseBody
+    public CommonReturnType login(@RequestParam(name="telephone") String telephone,
+                                  @RequestParam(name="password") String password) throws Exception{
+        //入参校验
+        if(com.alibaba.druid.util.StringUtils.isEmpty(telephone) ||
+                com.alibaba.druid.util.StringUtils.isEmpty(password)){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        // 用户登录服务，用来校验用户登录是否合法
+        UserModel userModel = userService.checkLogin(telephone,DigestUtils.md5Hex(password));
+        // 将登录凭证加入到用户登录成功的session内
+        this.httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
+        this.httpServletRequest.getSession().setAttribute("userInfo",userModel);
         return CommonReturnType.create(null);
     }
 

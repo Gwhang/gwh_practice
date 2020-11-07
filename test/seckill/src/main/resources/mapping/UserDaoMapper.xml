@@ -162,4 +162,11 @@
     where telphone = #{tel,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectByTelephone" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+        *
+    from user_info
+    where telphone = #{tel,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

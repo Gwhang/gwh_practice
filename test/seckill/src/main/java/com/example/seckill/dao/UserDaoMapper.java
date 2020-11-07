@@ -52,4 +52,7 @@ public interface UserDaoMapper {
     int updateByPrimaryKey(UserDao record);
 
     int selectByTel(String tel);
+
+    UserDao selectByTelephone(String tel);
+
 }
