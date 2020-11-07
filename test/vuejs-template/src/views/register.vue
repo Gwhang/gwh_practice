@@ -85,12 +85,12 @@ export default {
     },
     _submitForm() {
       api.register(this.user).then(response => {
-        if (response.code == SUCCESS) {
+        if (response.status == "success") {
           this.$router.push({
             path: "/login"
           });
         } else {
-          this.$message.error("注册失败了,原因为" + response.message);
+          this.$message.error("注册失败了,原因为" + response.data.errMsg);
         }
       });
     }

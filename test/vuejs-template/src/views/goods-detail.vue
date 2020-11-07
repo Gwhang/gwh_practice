@@ -72,8 +72,8 @@ export default {
   methods: {
     _getGoodsDetail() {
       api.getGoodsDetail(this.id).then(response => {
-        if (response.code == SUCCESS) {
-          this.goods = response.data.goods;
+        if (response.status == "success") {
+          this.goods = response.data;
           setInterval(this.countDown, 1000);
         }
       });

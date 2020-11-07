@@ -26,13 +26,12 @@ export default {
     getPhone() {
       if (this.telephone != null && this.telephone != "") {
         api.getOtp(this.telephone).then(response => {
-          if (response.status == SUCCESS) {
-             debugger;
+          if (response.status == "success") {
             this.$router.push({
               path: "/register"
             });
           }else{
-            this.$message.error("otp发送失败,原因为"+response.message);
+            this.$message.error("otp发送失败,原因为"+response.data.errMsg);
           }
         });
       } else {

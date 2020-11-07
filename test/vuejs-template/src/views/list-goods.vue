@@ -42,8 +42,8 @@ export default {
   methods: {
     _getGoodsList() {
       api.getGoodsList().then(response => {
-        if (response.code == SUCCESS) {
-          this.goodsList = response.data.goodsList;
+        if (response.status == "success") {
+          this.goodsList = response.data;
         }
       });
     },

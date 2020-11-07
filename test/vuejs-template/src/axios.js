@@ -3,9 +3,8 @@ import Qs from 'qs'
 import { Message } from 'element-ui';
 
 //设置全局axios默认值
-axios.defaults.timeout = 5000; //5秒的超时验证
+axios.defaults.timeout = 600000; //600秒的超时验证
 axios.defaults.withCredentials = true;//跨域带cookie
-
 
 function http(type, url, params, contentType) {
     let contentTypeUse = contentType === 'json' ? 'application/json' : 'application/x-www-form-urlencoded';

@@ -47,7 +47,7 @@ export default {
     },
     _submitForm() {
       api.login(this.telephone, this.password).then(response => {
-        if (response.code == SUCCESS) {
+        if (response.status == "success") {
           this.$message({
             message: "登录成功",
             type: "success"
@@ -56,7 +56,7 @@ export default {
             path: "/listGoods"
           });
         } else {
-          this.$message.error("登录失败了,原因为" + response.message);
+          this.$message.error("登录失败了,原因为" + response.data.errMsg);
         }
       });
     },

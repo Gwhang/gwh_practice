@@ -4,30 +4,30 @@
     <div class="form">
       <div class="row">
         <label>商品名</label>
-        <el-input placeholder="商品名" v-model="goods.title" clearable></el-input>
+        <el-input placeholder="商品名" v-model="item.title" clearable></el-input>
       </div>
 
       <div class="row">
         <label>商品描述</label>
-        <el-input placeholder="商品描述" v-model="goods.description"  clearable></el-input>
+        <el-input placeholder="商品描述" v-model="item.description"  clearable></el-input>
       </div>
 
       <div class="row">
         <label>价格</label>
-        <el-input placeholder="价格" v-model="goods.price"  clearable></el-input>
+        <el-input placeholder="价格" v-model="item.price"  clearable></el-input>
       </div>
 
       <div class="row">
         <label>图片</label>
-        <el-input placeholder="图片" v-model="goods.imgUrl"  clearable></el-input>
+        <el-input placeholder="图片" v-model="item.imgUrl"  clearable></el-input>
       </div>
 
       <div class="row">
         <label>库存</label>
-        <el-input placeholder="库存" v-model="goods.stock"  clearable></el-input>
+        <el-input placeholder="库存" v-model="item.stock"  clearable></el-input>
       </div>
     </div>
-    <el-button type="primary" @click="createGoods">提交创建</el-button>
+    <el-button type="primary" @click="createItem">提交创建</el-button>
   </div>
 </template>
 
@@ -38,48 +38,48 @@ const SUCCESS = 0;
 export default {
   data() {
     return {
-      goods: {}
+      item: {}
     };
   },
   created() {
-    document.title = "createGoods";
+    document.title = "createItem";
   },
   methods: {
-    createGoods() {
-      if (this.goods.title == null || this.goods.title == "") {
+    createItem() {
+      if (this.item.title == null || this.item.title == "") {
         this.$message.error("商品名称不能为空");
         return;
       }
 
-      if (this.goods.description == null || this.goods.description == "") {
+      if (this.item.description == null || this.item.description == "") {
         this.$message.error("商品描述不能为空");
         return;
       }
 
-      if (this.goods.price == null || this.goods.price == "") {
+      if (this.item.price == null || this.item.price == "") {
         this.$message.error("商品价格不能为空");
         return;
       }
 
-      if (this.goods.imgUrl == null || this.goods.imgUrl == "") {
+      if (this.item.imgUrl == null || this.item.imgUrl == "") {
         this.$message.error("商品图片不能为空");
         return;
       }
 
-      if (this.goods.stock == null || this.goods.stock == "") {
+      if (this.item.stock == null || this.item.stock == "") {
         this.$message.error("商品库存不能为空");
         return;
       }
       this._submitForm();
     },
     _submitForm() {
-      api.createGoods(this.goods).then(response => {
-        if (response.code == SUCCESS) {
+      api.createItem(this.item).then(response => {
+        if (response.status == "success") {
           this.$router.push({
-            path: "/list"
+            path: "/listGoods"
           });
         } else {
-          this.$message.error("创建失败了,原因为" + response.message);
+          this.$message.error("创建失败了,原因为" + response.data.errMsg);
         }
       });
     }

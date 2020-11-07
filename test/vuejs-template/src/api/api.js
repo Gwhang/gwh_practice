@@ -10,14 +10,14 @@ export default {
   login(telephone, password) {
     return http('post', '/api/user/login', { telephone: telephone, password: password })
   },
-  createGoods(goods) {
-    return http('post', '/api/goods/create', goods)
+  createItem(goods) {
+    return http('post', '/api/item/create', goods)
   },
   getGoodsList() {
-    return http('get', '/api/goods/list')
+    return http('get', '/api/item/list')
   },
   getGoodsDetail(id) {
-    return http('get', '/api/goods/get', { id: id })
+    return http('get', '/api/item/get', { id: id })
   },
   createOrder(order){
     return http('post', '/api/order/createOrder', order)
