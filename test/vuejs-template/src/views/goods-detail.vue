@@ -90,20 +90,20 @@ export default {
     },
     buy() {
       let order = {
-        goodsId: this.id,
+        itemId: this.id,
         amount: 1,
         promoId: this.goods.promoId
       };
       api.createOrder(order).then(response => {
-        if (response.code == SUCCESS) {
+        if (response.status == "success") {
           this.$message({
             message: "下单成功",
             type: "success"
           });
           this._getGoodsDetail();
         } else {
-          this.$message.error("下单失败了,原因为" + response.message);
-          if (response.code == 20003) {
+          this.$message.error("下单失败了,原因为" + response.data.errMsg);
+          if (response.data.errCode == 20003) {
             this.$router.push({
               path: "/login"
             });
