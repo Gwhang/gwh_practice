@@ -30,19 +30,23 @@
         </javaClientGenerator>
 
         <!--生成对应表及类名-->
+<!--
         <table tableName="user_info" domainObjectName="UserDao" enableCountByExample="false"
          enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
         ></table>
-        <!--生成对应表及类名-->
+        &lt;!&ndash;生成对应表及类名&ndash;&gt;
         <table tableName="user_password" domainObjectName="UserPassWord" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"></table>  <!--生成对应表及类名-->
-       <!--库存表-->
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"></table>  &lt;!&ndash;生成对应表及类名&ndash;&gt;
+       &lt;!&ndash;库存表&ndash;&gt;
         <table tableName="item_stock" domainObjectName="ItemStockDo" enableCountByExample="false"
          enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
         ></table>
-        <!--商品表-->
+        &lt;!&ndash;商品表&ndash;&gt;
         <table tableName="item" domainObjectName="ItemDo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"></table>
-
+-->
+        <!--订单表-->
+        <table tableName="order_info" domainObjectName="OrderInfoDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"></table>
     </context>
 </generatorConfiguration>
