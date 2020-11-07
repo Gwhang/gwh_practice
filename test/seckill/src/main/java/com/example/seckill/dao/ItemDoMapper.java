@@ -1,6 +1,7 @@
 package com.example.seckill.dao;
 
 import com.example.seckill.dataObject.ItemDo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -54,4 +55,6 @@ public interface ItemDoMapper {
     int updateByPrimaryKey(ItemDo record);
 
     List<ItemDo> selectItemList();
+
+    void increaseSales(@Param("id") Integer id,@Param("amount") Integer amount);
 }

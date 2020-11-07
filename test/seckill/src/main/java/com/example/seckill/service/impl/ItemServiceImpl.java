@@ -122,4 +122,34 @@ public class ItemServiceImpl implements ItemService {
         return itemModel;
     }
 
+    /**
+     * 库存扣减
+     * @param itemId
+     * @param amount
+     * @return
+     * @throws Exception
+     */
+    @Override
+    @Transactional
+    public boolean decreaseStock(Integer itemId, Integer amount) throws Exception {
+      int affectedRow = this.itemStockDoMapper.decreaseStock(itemId,amount);
+      if(affectedRow > 0){
+          //更新库存成功
+          return true;
+      }
+        return false;
+    }
+
+    /**
+     * 销量增加
+     * @param itemId
+     * @param amount
+     * @throws Exception
+     */
+    @Override
+    @Transactional
+    public void increaseSales(Integer itemId, Integer amount) throws Exception {
+        this.itemDoMapper.increaseSales(itemId,amount);
+
+    }
 }

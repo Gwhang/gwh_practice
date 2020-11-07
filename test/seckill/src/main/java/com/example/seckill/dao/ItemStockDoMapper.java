@@ -1,6 +1,7 @@
 package com.example.seckill.dao;
 
 import com.example.seckill.dataObject.ItemStockDo;
+import org.apache.ibatis.annotations.Param;
 
 public interface ItemStockDoMapper {
     /**
@@ -52,4 +53,6 @@ public interface ItemStockDoMapper {
     int updateByPrimaryKey(ItemStockDo record);
 
     ItemStockDo selectByItemId(Integer id);
+
+    int decreaseStock(@Param("itemId") Integer itemId, @Param("amount") Integer amount);
 }
