@@ -50,4 +50,6 @@ public interface ItemStockDoMapper {
      * @mbg.generated Sat Nov 07 21:34:40 CST 2020
      */
     int updateByPrimaryKey(ItemStockDo record);
+
+    ItemStockDo selectByItemId(Integer id);
 }

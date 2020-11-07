@@ -1,4 +1,4 @@
-package com.example.seckill.service.model;
+package com.example.seckill.controller.viewObject;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -7,28 +7,21 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
- * 商品信息
+ * 返回前端实体
  */
-public class ItemModel {
-
+public class ItemVo {
     private Integer id;
     //商品名称
-    @NotBlank(message = "商品名称不能未空")
     private String title;
     //商品价格
-    @NotNull(message = "商品价格不能为空")
-    @Min(value = 0,message = "商品价格必须大于0")
     private BigDecimal price;
     //商品的库存
-    @NotNull(message = "商品库存不能为空")
     private Integer stock;
     //商品的描述
-    @NotBlank(message = "商品描述不能为空")
     private String description;
     //商品的销量
     private Integer sales;
     //商品描述图片
-    @NotBlank(message = "商品图片不能为空")
     private String imgUrl;
 
     public Integer getId() {

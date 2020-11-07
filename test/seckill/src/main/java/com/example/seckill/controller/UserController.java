@@ -26,7 +26,7 @@ import java.util.Random;
  */
 @RequestMapping("/api/user")
 @Controller
-@CrossOrigin(allowCredentials = "true",allowedHeaders = "*") // 跨域接收 解决session中验证码获取为null的问题
+@CrossOrigin(allowCredentials = "true",origins = {"*"}) // 跨域接收 解决session中验证码获取为null的问题
 public class UserController extends BaseController{
 
     Logger logger= LoggerFactory.getLogger(this.getClass());
