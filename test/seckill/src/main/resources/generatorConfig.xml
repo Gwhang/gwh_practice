@@ -46,7 +46,10 @@
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"></table>
 -->
         <!--订单表-->
-        <table tableName="order_info" domainObjectName="OrderInfoDo" enableCountByExample="false"
+       <!-- <table tableName="order_info" domainObjectName="OrderInfoDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"></table>-->
+        <!--促销表-->
+        <table tableName="promo" domainObjectName="PromoDo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"></table>
     </context>
 </generatorConfiguration>

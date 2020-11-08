@@ -30,7 +30,8 @@ public class OrderController  extends BaseController{
     @RequestMapping(value = "/createOrder",method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType createOrder(@RequestParam(name = "itemId")Integer itemId,
-                                        @RequestParam(name = "amount") Integer amount)throws Exception{
+                                        @RequestParam(name = "amount") Integer amount,
+                                        @RequestParam(name = "promoId",required = false) Integer promoId)throws Exception{
         // 判断用户是否登录 session获取不到 TODO
 //        Boolean isLogin= (Boolean)httpServletRequest.getSession().getAttribute("IS_LOGIN");
 //        if(isLogin == null || !isLogin.booleanValue()){
@@ -39,7 +40,7 @@ public class OrderController  extends BaseController{
         // 获取用户登录信息
      //   UserModel userModel = (UserModel)httpServletRequest.getSession().getAttribute("userInfo");
         // 用户信息获取不到固定写 3
-        OrderModel orderModel = orderService.createOrder(3, itemId, amount);
+        OrderModel orderModel = orderService.createOrder(3, itemId,promoId, amount);
         return CommonReturnType.create(orderModel);
     }
 

@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderModel createOrder(Integer userId, Integer itemId, Integer amount) throws Exception{
+    public OrderModel createOrder(Integer userId, Integer itemId, Integer promoId,Integer amount) throws Exception{
         // 1.校验下单状态，下单商品是否存在，用户是否合法，购买数量是否正确
         ItemModel itemModel = this.itemService.getItemById(itemId);
         if(StringUtils.isEmpty(itemId)){
@@ -58,6 +58,16 @@ public class OrderServiceImpl implements OrderService {
         if(amount <=0 || amount >99){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"数量信息不存在");
         }
+        //校验活动信息
+        if(promoId != null){
+            //1校验对应活动是否存在这个使用商品
+            if(promoId.intValue() != itemModel.getPromoModel().getId()){
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"活动异常");
+            //2校验活动是否正在进行中
+            }else if(itemModel.getPromoModel().getStatus().intValue() != 2){
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"活动还未开始");
+            }
+        }
         // 2.落单减库存
         boolean flag = this.itemService.decreaseStock(itemId, amount);
         if(!flag){
@@ -68,8 +78,14 @@ public class OrderServiceImpl implements OrderService {
         orderModel.setUserId(userId);
         orderModel.setItemId(itemId);
         orderModel.setAmount(amount);
-        orderModel.setItemPrice(itemModel.getPrice());
-        orderModel.setOrderPrice(itemModel.getPrice().add(new BigDecimal(amount)));
+        orderModel.setPromoId(promoId);
+        if(promoId != null){
+            orderModel.setItemPrice(itemModel.getPromoModel().getPromoItemPrice());
+            orderModel.setOrderPrice(itemModel.getPromoModel().getPromoItemPrice().multiply(new BigDecimal(amount)));
+        }else {
+            orderModel.setItemPrice(itemModel.getPrice());
+            orderModel.setOrderPrice(itemModel.getPrice().multiply(new BigDecimal(amount)));
+        }
         //生成交易流水号，订单号
         orderModel.setId(this.generateOrderNo());
         OrderInfoDo orderInfoDo=this.convertFromOrderModel(orderModel);
