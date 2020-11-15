@@ -1,0 +1,8 @@
+# Created by .ignore support plugin (hsz.mobi)
+.DS_Store
+.idea/workspace.xml
+logs/
+*.DS_Store
+target/
+*.iml
+/.idea
