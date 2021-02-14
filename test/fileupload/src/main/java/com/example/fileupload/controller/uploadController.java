@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -39,7 +36,7 @@ public class uploadController {
         if(!file1.exists())
             file1.createNewFile();//在磁盘创建该文件
         file.transferTo(file1);//将接受的文件存储
-        return "sucucess";
+        return "success";
     }
 
     /**
@@ -56,12 +53,12 @@ public class uploadController {
         {
             if(!img[i].isEmpty())//文件不空
             {
-                File imgfile =new File("F:/fileupload/"+img[i].getOriginalFilename());
+                File imgfile =new File("D:/fileupload/"+img[i].getOriginalFilename());
                 imgfile.createNewFile();
                 img[i].transferTo(imgfile);
             }
         }
-        return "sucucess";
+        return "success";
     }
 
     /**
@@ -112,18 +109,18 @@ public class uploadController {
         {
             if(!img[i].isEmpty())//文件不空
             {
-                File imgfile =new File("F:/fileupload/"+img[i].getOriginalFilename());
+                File imgfile =new File("D:/fileupload/"+img[i].getOriginalFilename());
                 imgfile.createNewFile();
                 img[i].transferTo(imgfile);
             }
         }
         //接收resume
-        File resumefile =new File("F:/fileupload/"+resume.getOriginalFilename());
+        File resumefile =new File("D:/fileupload/"+resume.getOriginalFilename());
         //在磁盘中创建文件，此时文件存在但没有内容
         resumefile.createNewFile();
         //将接受的文件复制到创建的文件中
         resume.transferTo(resumefile);
-        return "sucucess";
+        return "success";
     }
 
 }
